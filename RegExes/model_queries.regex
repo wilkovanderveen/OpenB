@@ -1,0 +1,4 @@
+IF \s+(\[\w+\.\w+\])\s+(IS|NOT)\s+(GREATER THAN|EQUAL TO|SMALLER THAN)\s+(\w+|\[\w+\.\w+\])
+(((\((?<expr>.+?)\))(\s+(AND|OR)){0,1}))*
+
+IF (EXPRESSION) AND|OR (EXPRESSION) IS  TO (EXPRESSION)

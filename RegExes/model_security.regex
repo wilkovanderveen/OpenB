@@ -1,0 +1,1 @@
+^(FOR\s+MODEL\s+\[\w+\]\s*(ALLOW|DENY)\s+(USER|GROUP)\s+\[\w+\]\s+(CREATE|READ|UPDATE|DELETE))$
