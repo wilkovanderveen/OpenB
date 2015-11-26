@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using NUnit.Framework;
+using OpenB.Core;
 using OpenB.Core.ACL;
 using OpenB.Modeling;
+using OpenB.Modeling.BaseDefinitions;
+using DateTime = System.DateTime;
 
 namespace OpenB.DataStore.MongoDB.Test
 {
@@ -31,7 +35,7 @@ namespace OpenB.DataStore.MongoDB.Test
         public void GetAuditableModel_ReturnsModel()
         {
             var userGroup = new UserGroup("MY_USERGROUP", "MyUserGroup", "My usergroup");
-            var user = new User(userGroup);
+            var user = new User("MyUser", userGroup);
 
             IAuditableModel model = new AuditableModel
             {
@@ -45,7 +49,31 @@ namespace OpenB.DataStore.MongoDB.Test
                 Accessed = new AuditRegistration(user, DateTime.Now),
             };
 
-            var dataStoreService = new MongoDataStoreService("192.168.56.1", "mydb");
+            var dataStoreService = new MongoDataStoreService("192.168.100.123", "mydb");
+            dataStoreService.CreateModel(model);
+            IAuditableModel result = dataStoreService.GetModel<AuditableModel>("MYFIRSTMODEL");
+
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public void GetComplexModel_ReturnsModel()
+        {
+            PropertyDefinition propertyDefinition = new PropertyDefinition("MyFirstModelProperty",
+            new IntegerDefinition());
+
+            ModelDefinition definition = new ModelDefinition("MYFIRSTDEFININTION", "MyFirstDefinition",
+                "My first definition", new List<PropertyDefinition>() { propertyDefinition }, DefinitionFlags.None);
+
+            ModelFactory factory = new ModelFactory(new Project("MyFirstProject"));
+            IModel model = (IModel)factory.CreateInstance(definition, "KEY", "NAME", "DESCRIPTION");
+
+            var userGroup = new UserGroup("MY_USERGROUP", "MyUserGroup", "My usergroup");
+            var user = new User("MyUser", userGroup);
+
+            
+
+            var dataStoreService = new MongoDataStoreService("192.168.100.123", "mydb");
             dataStoreService.CreateModel(model);
             IAuditableModel result = dataStoreService.GetModel<AuditableModel>("MYFIRSTMODEL");
 

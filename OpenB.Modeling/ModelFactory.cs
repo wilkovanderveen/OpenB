@@ -5,29 +5,30 @@ namespace OpenB.Modeling
 {
     public class ModelFactory : IModelFactory 
     {
-        
         private readonly ModelCreationService _modelCreationService;
-        private readonly ModelAuthorizationService _modelAuthorizationService;
 
         public ModelFactory(Project project)
-        {
-
-            _modelCreationService = new ModelCreationService(project.Name);
-            
+        {           
+            _modelCreationService = new ModelCreationService(project.Name);            
         }
 
         public object CreateInstance(ModelDefinition definition, string key, string name, string description)
         {
-            return  _modelCreationService.InstantiateModel(definition, key, name, description);
+            return _modelCreationService.InstantiateModel(definition, key, name, description);
         }
 
-
-        public T GetInstance<T>(string key) where T : class, IModel 
+        public object ReadInstance(string definitionKey, string modelKey)
         {
-            if (typeof(T) == typeof(IAuthorizebleModel))
+            if (string.IsNullOrEmpty(definitionKey))
             {
-                
+                throw new ArgumentNullException(nameof(definitionKey));
             }
+
+            if (string.IsNullOrEmpty(modelKey))
+            {
+                throw new ArgumentNullException(nameof(modelKey));
+            }
+                      
             throw new NotImplementedException();
         }
     }

@@ -7,12 +7,12 @@ namespace OpenB.Modeling
     /// </summary>
     public class EncapsulatedModelDefinition : ModelDefinition
     {
-        private readonly Type _encapsulatedType;
+        public Type EncapsulatedType { get; private set; }
 
         public EncapsulatedModelDefinition(string key, string name, string description, Type encapsulatedType)
             : base(key, name, description)
         {
-            _encapsulatedType = encapsulatedType;
+            EncapsulatedType = encapsulatedType;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using OpenB.Core.ACL;
 using Rhino.Mocks;
 
@@ -13,7 +12,7 @@ namespace OpenB.Modeling.Test
         {
             UserGroup firstUserGroup = new UserGroup("MyFirstUserGroup", "My first usergroup", "My first usergroup description");
             UserGroup secondUserGroup = new UserGroup("MySecondUserGroup", "My second usergroup", "My second usergroup description");
-            User owner = new User(firstUserGroup);
+            User owner = new User("MyUser", firstUserGroup);
 
             MockRepository mockRepository = new MockRepository();
             IAuthorizebleModel model = mockRepository.Stub<IAuthorizebleModel>();
@@ -27,15 +26,15 @@ namespace OpenB.Modeling.Test
 
             ModelAuthorizationService authorizationService = new ModelAuthorizationService();
 
-            Assert.That(authorizationService.IsUserAuthorizedForModel(owner, Permissions.Read, model), Is.True);
-            Assert.That(authorizationService.IsUserAuthorizedForModel(owner, Permissions.Write, model), Is.True);
+            Assert.That(authorizationService.IsUserAuthorizedForModel(owner, Permissions.Read, model), Is.False);
+            Assert.That(authorizationService.IsUserAuthorizedForModel(owner, Permissions.Write, model), Is.False);
         }
 
         [Test]
         public void Model_UserIsInGroup_GroupHasPermissions_UserHasPermissions_PermissionsAreOK()
         {
             UserGroup userGroup = new UserGroup("MyFirstUserGroup", "My first usergroup", "My first usergroup description");
-            User owner = new User(userGroup);
+            User owner = new User("MyUser", userGroup);
 
             MockRepository mockRepository = new MockRepository();
             IAuthorizebleModel model = mockRepository.Stub<IAuthorizebleModel>();
@@ -57,7 +56,7 @@ namespace OpenB.Modeling.Test
         public void Model_UserIsInGroup_GroupHasNoPermissions_UserHasPermissions_PermissionsAreNotOK()
         {
             UserGroup userGroup = new UserGroup("MyFirstUserGroup", "My first usergroup", "My first usergroup description");
-            User owner = new User(userGroup);
+            User owner = new User("MyUser", userGroup);
 
             MockRepository mockRepository = new MockRepository();
             IAuthorizebleModel model = mockRepository.Stub<IAuthorizebleModel>();

@@ -1,4 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using System.Linq;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using OpenB.Core;
 using OpenB.Core.Data;
 
@@ -17,7 +20,8 @@ namespace OpenB.DataStore.MongoDB
 
         public T GetModel<T>(string key) where T : IModel
         {
-            return _database.GetCollection(typeof(T).Name).FindOneAs<T>();
+            var query = Query<T>.Where(t => t.Key == key);
+            return _database.GetCollection(typeof (T).Name).FindAs<T>(query).FirstOrDefault();
         }
 
         public void CreateModel<T>(T model) where T : IModel

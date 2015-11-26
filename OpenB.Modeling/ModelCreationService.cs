@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using Microsoft.CSharp;
 using OpenB.Core;
@@ -19,14 +20,13 @@ namespace OpenB.Modeling
         {
             _classStringBuilder = new FormattedStringBuilder();
             _defaultNamespace = defaultNamespace;
-            _propertyCreationService = new PropertyCreationService();
+            _propertyCreationService = new PropertyCreationService(new PropertySignatureFactory());
         }
 
         public string CreateClassDefinition(ModelDefinition definition)
         {
             string baseClass = GetBaseClass(definition.DefinitionFlags);
-
-
+            
             _classStringBuilder = new FormattedStringBuilder();
             _classStringBuilder.AppendLine("using System;");
             _classStringBuilder.AppendLine("using OpenB.Core;");
@@ -42,7 +42,10 @@ namespace OpenB.Modeling
 
             foreach (PropertyDefinition propertyDefinition in definition.Properties)
             {
-                _propertyCreationService.CreatePropertyDefinition(propertyDefinition, definition.Name,
+               var propertySignature = PropertyNameFactory.GetPropertyName(propertyDefinition.Name, propertyDefinition.ModelDefinition,
+                    (propertyDefinition.PropertyFlags & PropertyFlags.Required) == PropertyFlags.Required);
+
+                _propertyCreationService.CreatePropertyDefinition(propertyDefinition, propertySignature,
                     _classStringBuilder);
             }
 

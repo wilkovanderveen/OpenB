@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using OpenB.Core.ACL;
 using OpenB.Core.Data;
+using OpenB.Core;
 
 namespace OpenB.Modeling
 {
@@ -19,9 +18,9 @@ namespace OpenB.Modeling
             _user = user;
         }
 
-        public T GetModel<T>(string key)
+        public T ReadModel<T>(string key) where T : IModel
         {
             throw new NotImplementedException();
-        }
+        }        
     }
 }

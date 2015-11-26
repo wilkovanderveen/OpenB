@@ -54,6 +54,7 @@
     <Compile Include="Data\IDataStoreService.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="IModelFactory.cs" />
+    <Compile Include="IParser.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ACL\User.cs" />

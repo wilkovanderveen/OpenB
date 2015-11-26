@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using OpenB.Core;
+using OpenB.Modeling.BaseDefinitions;
 
 namespace OpenB.Modeling.Test
 {
@@ -10,13 +11,11 @@ namespace OpenB.Modeling.Test
         [Test]
         public void Compile_SimpleModel_KeyNameDescription_AreFilled()
         {
-            EncapsulatedModelDefinition encapsulatedModelDefinition = new EncapsulatedModelDefinition("STRING", "string", "string", typeof(string));
-            PropertyDefinition propertyDefinition = new PropertyDefinition("MYFIRSTMODELPROPERTY",
-                encapsulatedModelDefinition);
+            PropertyDefinition propertyDefinition = new PropertyDefinition("MyFirstModelProperty",
+                new IntegerDefinition());
 
             ModelDefinition definition = new ModelDefinition("MYFIRSTDEFININTION", "MyFirstDefinition",
                 "My first definition", new List<PropertyDefinition>() { propertyDefinition }, DefinitionFlags.None);
-
 
             ModelFactory factory = new ModelFactory(new Project("MyFirstProject"));
             IModel model = (IModel)factory.CreateInstance(definition, "KEY", "NAME", "DESCRIPTION");

@@ -29,16 +29,24 @@ namespace OpenB.Modeling
 
         protected ModelDefinition(string key, string name, string description)
         {
+            if (string.IsNullOrEmpty(key)) throw new ArgumentNullException(nameof(key));
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(key));
+
+            if (name.Contains(" "))
+            {
+                throw new NotSupportedException("Model definition name cannot contain whitespaces");
+            }
+
             Description = description;
             Name = name;
             Key = key;
 
             Created = DateTime.Now;
             Modified = DateTime.Now;
-            Active = false;
+            IsActive = false;
         }
 
-        public bool Active { get; set; }
+        public bool IsActive { get; set; }
 
         public DateTime Modified { get; set; }
 

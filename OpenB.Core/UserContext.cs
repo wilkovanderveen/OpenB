@@ -11,9 +11,11 @@ namespace OpenB.Core
             _modelFactory = modelFactory;
         }
 
-        public T GetInstance<T>(string key) where T : class, IModel
+        public T GetInstance<T>(string definitionKey, string modelKey) where T : class, IModel
         {
-           return  _modelFactory.GetInstance<T>(key);
+           object objInstance =  _modelFactory.ReadInstance(definitionKey, modelKey);
+
+            return objInstance as T;
         }
     }
 }

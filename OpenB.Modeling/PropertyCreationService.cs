@@ -8,12 +8,20 @@ namespace OpenB.Modeling
     /// </summary>
     public class PropertyCreationService
     {
+        public IPropertySignatureFactory PropertySignatureFactory { get; private set; }
+
+        public PropertyCreationService(IPropertySignatureFactory propertySignatureFactory)
+        {
+            if (propertySignatureFactory == null) throw new ArgumentNullException(nameof(propertySignatureFactory));
+            this.PropertySignatureFactory = propertySignatureFactory;
+        }
+
         public void CreatePropertyDefinition(PropertyDefinition propertyDefinition, string modelName, FormattedStringBuilder classStringBuilder)
         {
-            classStringBuilder.AppendLine(string.Format("private {0} _{1};", modelName, propertyDefinition.Name));
             if (classStringBuilder == null)
-                throw new ArgumentNullException("classStringBuilder");
+                throw new ArgumentNullException(nameof(classStringBuilder));
 
+            classStringBuilder.AppendLine(string.Format("private {0} _{1};", PropertySignatureFactory.GetSignature(modelName, propertyDefinition.Cardinality), propertyDefinition.Name));
             classStringBuilder.AppendLine(string.Format("public {0} {1}", modelName, propertyDefinition.Name));
             classStringBuilder.AppendLine("{");
             classStringBuilder.LevelDown();
@@ -50,5 +58,10 @@ namespace OpenB.Modeling
             classStringBuilder.LevelUp();
            
         }
+    }
+
+    public interface IPropertySignatureFactory
+    {
+        string GetSignature(string modelName, Cardinality cardinality);
     }
 }
