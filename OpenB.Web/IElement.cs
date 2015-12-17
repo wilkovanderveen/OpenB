@@ -8,4 +8,6 @@ namespace OpenB.Web
         void Initialize();
         void Render(HtmlTextWriter textWriter);
     }
+
+   
 }

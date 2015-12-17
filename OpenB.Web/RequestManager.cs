@@ -8,17 +8,17 @@ namespace OpenB.Web
     {
         public RequestManager()
         {
-            FileProviders = new Dictionary<string, ITextFileProvider>();
+            FileProviders = new Dictionary<string, IFileProvider>();
         }
 
-        private IDictionary<string, ITextFileProvider> FileProviders { get; }
+        private IDictionary<string, IFileProvider> FileProviders { get; }
 
-        public void Register(ITextFileProvider provider)
+        public void Register(IFileProvider provider)
         {
             FileProviders.Add(provider.FileExtension, provider);
         }
 
-        public ITextFileProvider GetProvider(string path)
+        public IFileProvider GetProvider(string path)
         {
             var lastIndexOfDot = path.LastIndexOf(".", StringComparison.Ordinal);
 
@@ -27,7 +27,7 @@ namespace OpenB.Web
 
             var extension = path.Substring(lastIndexOfDot + 1, path.Length - (lastIndexOfDot) - 1);
 
-            ITextFileProvider provider;
+            IFileProvider provider;
 
             if (FileProviders.TryGetValue(extension, out provider))
             {

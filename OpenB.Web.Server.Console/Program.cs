@@ -62,7 +62,7 @@ namespace OpenB.Web.Server.Console
             {
                 context.Response.Cookies.Add(new Cookie("OpenB.SessionId", Guid.NewGuid().ToString(), "/"));
             }
-
+                        
             System.Console.WriteLine("Request path: " + context.Request.Url.AbsolutePath);
 
             IWebThemePackage bootStrapWebThemePackage = new ThemeLoader().Initialize();
@@ -70,47 +70,30 @@ namespace OpenB.Web.Server.Console
             WebSolution = WebSolution.GetInstance(bootStrapWebThemePackage);
             WebSolution.Initialize();
 
-            ITextFileProvider provider = WebSolution.RenderContext.RequestManager.GetProvider(context.Request.Url.AbsolutePath);
+            ITextFileProvider provider = WebSolution.RenderContext.RequestManager.GetProvider(context.Request.Url.AbsolutePath) as ITextFileProvider;
 
             if (provider != null)
             {
-                var stringResource = provider.Provide(context.Request.Url.AbsolutePath);
-                if (stringResource != null)
+                try
                 {
-                    var stringBuffer = Encoding.UTF8.GetBytes(stringResource);
-                    context.Response.ContentType = provider.FileType;
-                    context.Response.OutputStream.Write(stringBuffer, 0, stringBuffer.Length);
-                    context.Response.Close();
+                    var stringResource = provider.Provide(context.Request.Url.AbsolutePath);
+                    if (stringResource != null)
+                    {
+                        var stringBuffer = Encoding.UTF8.GetBytes(stringResource);
+                        context.Response.StatusCode = 200;
+                        context.Response.ContentType = provider.FileType;
+                        context.Response.OutputStream.Write(stringBuffer, 0, stringBuffer.Length);
+                        context.Response.Close();
+                    }
                 }
-            }
-            else
-            {
-                context.Response.ContentType = "text/html";
-
-                StringBuilder stringBuilder = new StringBuilder();
-                StringWriter stringWriter = new StringWriter(stringBuilder);
-                XhtmlTextWriter textWriter = new XhtmlTextWriter(stringWriter);
-
-
-
-                RenderContext renderContext = WebSolution.RenderContext;
-
-                Page page = new Page(renderContext, "MyFirstPage");
-                page.Elements.Add(new Textbox(renderContext, "MyFirstTextBox"));
-                page.Elements.Add(new Checkbox(renderContext, "MyFirstTextBox"));
-                page.Elements.Add(new Button(renderContext, "MyFirstTextBox") {Text = "Click me..."});
-                page.Elements.Add(new RadioButton(renderContext, "MyFirstTextBox"));
-
-
-                page.Initialize();
-                page.Render(textWriter);
-
-
-                var buffer = CreateContent(stringBuilder.ToString());
-
-                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                context.Response.Close();
-            }
+                catch(ResourceNotFoundException rnex)
+                {
+                    context.Response.StatusCode = 404;
+                    context.Response.Close();
+                   
+                }
+               
+            }            
         }
 
         public static WebSolution WebSolution { get; set; }
@@ -121,29 +104,7 @@ namespace OpenB.Web.Server.Console
         }
     }
 
-    internal class Textbox : BaseElement, IElement
-    {
-        public Textbox(RenderContext renderContext, string key) : base(renderContext, key)
-        {
-        }
-
-        public string Value { get; set; }
-
-        public void Initialize()
-        {
-            RenderContext.Scripts.Add(new JavaScriptSource("OpenB.Controls.js"));
-        }
-
-        public void Render(HtmlTextWriter textWriter)
-        {
-            if (textWriter == null) throw new ArgumentNullException(nameof(textWriter));
-
-            textWriter.RenderBeginTag(HtmlTextWriterTag.Input);
-            textWriter.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            textWriter.Write(Value);
-            textWriter.RenderEndTag();
-        }
-    }
+   
 
     internal class Button : BaseElement, IElement
     {
@@ -168,24 +129,7 @@ namespace OpenB.Web.Server.Console
         }
     }
 
-    internal class Checkbox : BaseElement, IElement
-    {
-        public Checkbox(RenderContext renderContext, string key) : base(renderContext, key)
-        {
-        }
-
-        public void Initialize()
-        {
-            RenderContext.Scripts.Add(new JavaScriptSource("OpenB.Controls.js"));
-        }
-
-        public void Render(HtmlTextWriter textWriter)
-        {
-            textWriter.RenderBeginTag(HtmlTextWriterTag.Input);
-            textWriter.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            textWriter.RenderEndTag();
-        }
-    }
+   
 
     internal class RadioButton : BaseElement, IElement
     {

@@ -4,7 +4,7 @@ namespace OpenB.Web
     {
         public CascadingStyleSheetSource(string scriptFile)
         {
-            HtmlTag = $"<link rel=\"stylesheet\" type=\"text/css\" href=\"css/{scriptFile}\" />";
+            HtmlTag = $"<link rel=\"stylesheet\" type=\"text/css\" href=\"{scriptFile}\">";
         }
 
         public string HtmlTag { get; }

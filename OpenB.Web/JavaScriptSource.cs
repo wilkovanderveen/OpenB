@@ -4,7 +4,7 @@ namespace OpenB.Web
     {
         public JavaScriptSource(string scriptFile)
         {
-            HtmlTag = $"<script src=\"~/scripts/{scriptFile}\" type=\"text/javascript\"></script>";
+            HtmlTag = $"<script src=\"{scriptFile}\" type=\"text/javascript\"></script>";
         }
 
         public string HtmlTag { get; }

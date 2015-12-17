@@ -45,7 +45,13 @@
     <Compile Include="BaseElement.cs" />
     <Compile Include="CascadingStyleSheetProvider.cs" />
     <Compile Include="CascadingStyleSheetSource.cs" />
+    <Compile Include="CheckBox.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="ITextFileProvider.cs" />
+    <Compile Include="MarkupLanguagePropertyAttribute.cs" />
+    <Compile Include="OpenBML\XmlParser.cs" />
+    <Compile Include="ResourceNotFoundException.cs" />
+    <Compile Include="TextBox.cs" />
     <Compile Include="Theming\IWebThemeLoader.cs" />
     <Compile Include="Theming\IWebThemePackage.cs" />
     <Compile Include="JavaScriptProvider.cs" />

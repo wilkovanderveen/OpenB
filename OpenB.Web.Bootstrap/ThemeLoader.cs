@@ -82,6 +82,30 @@ namespace OpenB.Web.Bootstrap
             get { return _scripts; }
         }
 
+        public ITextFileProvider JavaScriptProvider
+        {
+            get
+            {
+                return new JavaScriptProvider("OpenB.Web.Bootstrap", "OpenB.Web.Bootstrap.Scripts");
+            }          
+        }
+
+        public ITextFileProvider JSONMapProvider
+        {
+            get
+            {
+                return new JSONMapProvider("OpenB.Web.Bootstrap", "OpenB.Web.Bootstrap.Scripts");
+            }          
+        }
+
+        public ITextFileProvider StyleSheetProvider
+        {
+            get
+            {
+                return new CascadingStyleSheetProvider ("OpenB.Web.Bootstrap", "OpenB.Web.Bootstrap.Content");
+            }           
+        }
+
         public void AddStylesheets(CascadingStyleSheetSource cascadingStyleSheetSource)
         {
            _styleSheets.Add(cascadingStyleSheetSource );

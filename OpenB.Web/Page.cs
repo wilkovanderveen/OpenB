@@ -14,10 +14,10 @@ namespace OpenB.Web
 
             return (x.HtmlTag.Equals(y.HtmlTag));
         }
-
+        
         public int GetHashCode(IScriptSource obj)
         {
-            return obj.GetHashCode();
+            return obj.HtmlTag.GetHashCode();
         }
     }
 
@@ -29,7 +29,7 @@ namespace OpenB.Web
             RequestManager = requestManager;
 
             Scripts = new HashSet<IScriptSource>(new ScriptSourceComparer());
-            Stylesheets = new HashSet<CascadingStyleSheetSource>();
+            Stylesheets = new HashSet<CascadingStyleSheetSource>(new ScriptSourceComparer());
         }
 
         public HashSet<IScriptSource> Scripts { get; set; }
@@ -39,19 +39,26 @@ namespace OpenB.Web
 
     public interface IRequestManager
     {
-        void Register(ITextFileProvider provider);
-        ITextFileProvider GetProvider(string path);
+        void Register(IFileProvider provider);
+        IFileProvider GetProvider(string path);
     }
 
     public class Page : BaseElement, IElementContainer
     {
         public Page(RenderContext renderContext, string key) : base(renderContext, key)
-        {
+        {           
             Elements = new List<IElement>();
         }
 
         public void Initialize()
         {
+            RenderContext.Scripts.Add(new JavaScriptSource("jquery-1.9.1.min.js"));
+            RenderContext.Scripts.Add(new JavaScriptSource("bootstrap.min.js"));
+
+            RenderContext.Stylesheets.Add(new CascadingStyleSheetSource("bootstrap.min.css"));
+            RenderContext.Stylesheets.Add(new CascadingStyleSheetSource("bootstrap-theme.min.css"));
+          
+
             foreach (IElement element in Elements)
             {
                 element.Initialize();
@@ -62,6 +69,10 @@ namespace OpenB.Web
         {
             if (textWriter == null) throw new ArgumentNullException(nameof(textWriter));
 
+            textWriter.WriteLine("<!DOCTYPE html>");
+            textWriter.WriteLine("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+
+            textWriter.AddAttribute("lang", "en");
             textWriter.RenderBeginTag(HtmlTextWriterTag.Html);
             textWriter.RenderBeginTag(HtmlTextWriterTag.Head);
 

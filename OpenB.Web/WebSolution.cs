@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenB.Web.Theming;
+using OpenB.Web.OpenBML;
 
 namespace OpenB.Web
 {
@@ -20,8 +21,11 @@ namespace OpenB.Web
         {
             if (!isInitialized)
             {
-                RenderContext.RequestManager.Register(new CascadingStyleSheetProvider());
-                RenderContext.RequestManager.Register(new JavaScriptProvider());
+                RenderContext.RequestManager.Register(webThemePackage.StyleSheetProvider);
+                RenderContext.RequestManager.Register(webThemePackage.JavaScriptProvider);
+                RenderContext.RequestManager.Register(webThemePackage.JSONMapProvider);
+                RenderContext.RequestManager.Register(new IconProvider());
+                RenderContext.RequestManager.Register(new OpenBMLProvider(new OpenBML.XmlParser(new ElementFactory(this.RenderContext))));
 
                 isInitialized = true;
             }
