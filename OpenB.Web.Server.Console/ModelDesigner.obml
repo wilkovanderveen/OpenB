@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" ?>
+<obml:Page xmlns:obml="http://www.openb.org/schemas/obml" key="ModelDesigner">
+  <obml:Component key="MyFirstComponent">
+    <obml:TextBox key="MyFirstTextBox" />
+    <obml:CheckBox key="MyFirstCheckBox" />
+    <obml:ComboBox key="MyFirstComboBox" />
+  </obml:Component> 
+	<!-- <obml:Workspace Model="MyFirstModel" key="MyFirstWorkspace" /> -->
+</obml:Page>
