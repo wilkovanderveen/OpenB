@@ -2,7 +2,8 @@
 using System.Xml;
 using System.Linq;
 using System.Diagnostics.Contracts;
-using OpenB.Web;
+using System.Reflection;
+using OpenB.Web.Elements;
 
 namespace OpenB.Web.OpenBML
 {
@@ -54,31 +55,39 @@ namespace OpenB.Web.OpenBML
         public IElement GetElement(XmlElement xmlElement)
         {
             var key = xmlElement.Attributes["key"].Value;
-            switch (xmlElement.LocalName)
+
+            Type elementType =
+                Assembly
+                    .GetAssembly(typeof (IElement))
+                    .GetExportedTypes().SingleOrDefault(t => typeof(BaseElement).IsAssignableFrom(t) && t.Name.Equals(xmlElement.LocalName) && !t.IsInterface && !t.IsAbstract);
+
+            if (elementType != null)
             {
-                case "Page":                   
-                    Page page = new Page(renderContext, key);
-                    return page;                   
+                object element = Activator.CreateInstance(elementType, renderContext, key);
 
-                case "TextBox":                 
-                    TextBox  textBox = new TextBox(renderContext, key);
-                    return textBox;
+                foreach (XmlAttribute xmlAttribute in xmlElement.Attributes)
+                {
+                    if (xmlAttribute.LocalName.Equals("key")  || xmlAttribute.Name.StartsWith("xmlns:"))
+                        continue;
 
-                case "CheckBox":
-                    CheckBox checkBox = new CheckBox(renderContext, key);
-                    return checkBox;
+                    PropertyInfo  propertyInfo =
+                        elementType.GetProperties().Where(p => p.GetCustomAttribute<MarkupLanguagePropertyAttribute>() != null && p.GetCustomAttribute<MarkupLanguagePropertyAttribute>()
+                            .PropertyName.Equals(xmlAttribute.LocalName)).SingleOrDefault();
+                        
 
-                case "ComboBox":
-                    ComboBox comboBox = new ComboBox(renderContext, key);
-                    return comboBox;
-
-                case "Component":
-                    Component component = new Component(renderContext, key);
-                    return component;
-
-                default:
-                    throw new NotSupportedException(string.Format("Element type {0} is not supported.", xmlElement.LocalName));
+                    if (propertyInfo != null)
+                    {
+                        propertyInfo.SetValue(element, xmlAttribute.InnerText);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException($"Element type {xmlElement.LocalName} does not support {xmlAttribute.LocalName}.");
+                    }
+                }
+                return element as IElement;
             }
+            throw new NotSupportedException($"Element type {xmlElement.LocalName} is not supported.");
+            
         }
     }
 }

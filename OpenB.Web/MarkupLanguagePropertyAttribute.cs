@@ -6,12 +6,19 @@ namespace OpenB.Web
     {
         public string PropertyName { get; }
 
+        public MarkupLanguagePropertyAttribute()
+        {
+            
+        }
+
         public MarkupLanguagePropertyAttribute(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))
             {
                 throw new ArgumentException(string.Format("{0} cannot be null or empty.", nameof(propertyName)));
             }
+
+            PropertyName = propertyName;
         }
     }
 }

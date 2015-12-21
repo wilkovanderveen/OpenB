@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Web.UI;
 using OpenB.Web.Bootstrap;
 using OpenB.Web.Theming;
 
@@ -101,52 +100,6 @@ namespace OpenB.Web.Server.Console
         private static byte[] CreateContent(string value)
         {
             return Encoding.UTF8.GetBytes(value);
-        }
-    }
-
-   
-
-    internal class Button : BaseElement, IElement
-    {
-        public Button(RenderContext renderContext, string key) : base(renderContext, key)
-        {
-        }
-
-        public string Text { get; set; }
-
-        public void Initialize()
-        {
-            RenderContext.Scripts.Add(new JavaScriptSource("OpenB.Controls.js"));
-            RenderContext.Stylesheets.Add(new CascadingStyleSheetSource("controls.css"));
-        }
-
-        public void Render(HtmlTextWriter textWriter)
-        {
-            textWriter.RenderBeginTag(HtmlTextWriterTag.Input);
-            textWriter.Write(Text);
-            textWriter.AddAttribute(HtmlTextWriterAttribute.Type, "button");
-            textWriter.RenderEndTag();
-        }
-    }
-
-   
-
-    internal class RadioButton : BaseElement, IElement
-    {
-        public RadioButton(RenderContext renderContext, string key) : base(renderContext, key)
-        {
-        }
-
-        public void Initialize()
-        {
-            RenderContext.Scripts.Add(new JavaScriptSource("OpenB.Controls.js"));
-        }
-
-        public void Render(HtmlTextWriter textWriter)
-        {
-            textWriter.RenderBeginTag(HtmlTextWriterTag.Input);
-            textWriter.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            textWriter.RenderEndTag();
         }
     }
 }

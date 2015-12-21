@@ -10,11 +10,6 @@ namespace OpenB.Modeling.Test
 {
     public class TestModel : BaseModel 
     {
-        public string Key { get; }
-        public string Name { get; }
-        public string Description { get; }
-        public bool IsActive { get; set; }
-
         public TestModel(string key, string name, string description) : base(key, name, description)
         {
         }

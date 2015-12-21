@@ -13,6 +13,10 @@ namespace OpenB.Modeling
 
         public Repository(IDataStoreService dataStoreService, IModelAuthorizationService modelAuthorizationService, User user)
         {
+            if (dataStoreService == null) throw new ArgumentNullException(nameof(dataStoreService));
+            if (modelAuthorizationService == null) throw new ArgumentNullException(nameof(modelAuthorizationService));
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            
             _dataStoreService = dataStoreService;
             _modelAuthorizationService = modelAuthorizationService;
             _user = user;

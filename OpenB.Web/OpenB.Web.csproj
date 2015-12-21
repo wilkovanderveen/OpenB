@@ -42,26 +42,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
-    <Compile Include="BaseElement.cs" />
+    <Compile Include="Elements\BaseElement.cs" />
+    <Compile Include="BaseModelBoundElement.cs" />
     <Compile Include="CascadingStyleSheetProvider.cs" />
     <Compile Include="CascadingStyleSheetSource.cs" />
-    <Compile Include="CheckBox.cs" />
-    <Compile Include="Component.cs" />
+    <Compile Include="Elements\Button.cs" />
+    <Compile Include="Elements\CheckBox.cs" />
+    <Compile Include="Elements\ComboBox.cs" />
+    <Compile Include="Elements\Component.cs" />
+    <Compile Include="Elements\Label.cs" />
+    <Compile Include="Elements\RadioButton.cs" />
+    <Compile Include="Elements\RenderContext.cs" />
+    <Compile Include="Elements\ScriptSourceComparer.cs" />
     <Compile Include="ITextFileProvider.cs" />
     <Compile Include="MarkupLanguagePropertyAttribute.cs" />
     <Compile Include="OpenBML\XmlParser.cs" />
     <Compile Include="ResourceNotFoundException.cs" />
-    <Compile Include="TextBox.cs" />
+    <Compile Include="Elements\TextBox.cs" />
     <Compile Include="Theming\IWebThemeLoader.cs" />
     <Compile Include="Theming\IWebThemePackage.cs" />
     <Compile Include="JavaScriptProvider.cs" />
     <Compile Include="RequestManager.cs" />
-    <Compile Include="IElementContainer.cs" />
+    <Compile Include="Elements\IElementContainer.cs" />
     <Compile Include="IScriptSource.cs" />
     <Compile Include="JavaScriptSource.cs" />
     <Compile Include="SessionContext.cs" />
-    <Compile Include="Page.cs" />
-    <Compile Include="IElement.cs" />
+    <Compile Include="Elements\Page.cs" />
+    <Compile Include="Elements\IElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebSolution.cs" />
   </ItemGroup>
@@ -69,6 +76,10 @@
     <ProjectReference Include="..\OpenB.Core\OpenB.Core.csproj">
       <Project>{3a08f31d-9fe5-4434-9b60-9815fd6b6114}</Project>
       <Name>OpenB.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenB.Modeling\OpenB.Modeling.csproj">
+      <Project>{9a5bf565-80ed-41bf-8110-e968cc97b477}</Project>
+      <Name>OpenB.Modeling</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,4 +1,6 @@
-﻿namespace OpenB.Core
+﻿using System;
+
+namespace OpenB.Core
 {
     public class Project
     {
@@ -7,6 +9,11 @@
         public Project(string name)
         {
             Name = name;
+        }
+
+        public static Project GetInstance(string name)
+        {
+            throw new NotImplementedException();
         }
     }
 }

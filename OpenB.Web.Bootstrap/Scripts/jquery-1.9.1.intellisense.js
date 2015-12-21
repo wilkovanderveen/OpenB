@@ -696,7 +696,7 @@ intellisense.annotate(jQuery.Event.prototype, {
     /// <returns type="String" />
   },
   'which': function() {
-    /// <summary>For key or mouse events, this property indicates the specific key or button that was pressed.</summary>
+    /// <summary>For key or mouse events, this property indicates the specific Key or button that was pressed.</summary>
     /// <returns type="Number" />
   },
 });

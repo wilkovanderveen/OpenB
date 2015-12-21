@@ -902,7 +902,7 @@ jQuery.ready.promise = function( obj ) {
 			// A fallback to window.onload, that will always work
 			window.addEventListener( "load", completed, false );
 
-		// If IE event model is used
+		// If IE event Model is used
 		} else {
 			// Ensure firing before onload, maybe late but safe also for iframes
 			document.attachEvent( "onreadystatechange", completed );
@@ -1687,7 +1687,7 @@ function internalRemoveData( elem, name, pvt ) {
 				// When data is initially created, via ("key", "val") signature,
 				// keys will be converted to camelCase.
 				// Since there is no way to tell _how_ a key was added, remove
-				// both plain key and camelCase key. #12786
+				// both plain key and camelCase Key. #12786
 				// This will only penalize the array argument path.
 				name = name.concat( jQuery.map( name, jQuery.camelCase ) );
 			}
@@ -7091,7 +7091,7 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = parseFloat( val ) || 0;
 	}
 
-	// use the active box-sizing model to add/subtract irrelevant styles
+	// use the active box-sizing Model to add/subtract irrelevant styles
 	return ( val +
 		augmentWidthOrHeight(
 			elem,
