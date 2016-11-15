@@ -78,14 +78,7 @@ namespace OpenB.Modeling
                 CreateClassDefinition(definition);
 
             var codeProvider = new CSharpCodeProvider();
-            var parameters = new CompilerParameters
-            {
-                GenerateExecutable = false,
-                GenerateInMemory = true,
-                OutputAssembly = _defaultNamespace
-            };
-            parameters.ReferencedAssemblies.Add("OpenB.Modeling.dll");
-            parameters.ReferencedAssemblies.Add("OpenB.Core.dll");
+            CompilerParameters parameters = GenerateParameters();
 
             CompilerResults compilerResults = codeProvider.CompileAssemblyFromSource(parameters, classString);
 
@@ -102,7 +95,21 @@ namespace OpenB.Modeling
             return
                 compilerResults.CompiledAssembly.CreateInstance(
                     string.Format("{0}.{1}", _defaultNamespace, definition.Name), false, BindingFlags.CreateInstance,
-                    null, new Object[] {key, name, description}, CultureInfo.InvariantCulture, null) as IModel;
+                    null, new Object[] { key, name, description }, CultureInfo.InvariantCulture, null) as IModel;
+        }
+
+        private CompilerParameters GenerateParameters()
+        {
+            var parameters = new CompilerParameters
+            {
+                GenerateExecutable = false,
+                GenerateInMemory = true,
+                OutputAssembly = _defaultNamespace
+            };
+
+            parameters.ReferencedAssemblies.Add("OpenB.Modeling.dll");
+            parameters.ReferencedAssemblies.Add("OpenB.Core.dll");
+            return parameters;
         }
     }
 }

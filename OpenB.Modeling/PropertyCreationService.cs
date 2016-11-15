@@ -26,8 +26,10 @@ namespace OpenB.Modeling
             classStringBuilder.AppendLine("{");
             classStringBuilder.LevelDown();
             classStringBuilder.AppendLine();
+
             BuildGetter(propertyDefinition.Name, classStringBuilder);
             BuildSetter(propertyDefinition.Name, classStringBuilder);
+
             classStringBuilder.LevelUp();
             classStringBuilder.AppendLine("}");
         }

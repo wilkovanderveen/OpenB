@@ -9,6 +9,11 @@ namespace OpenB.Modeling
         public ModelDefinition ModelDefinition { get; private set; }
         public Cardinality Cardinality { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="modelDefinition"></param>
         public PropertyDefinition(string name, ModelDefinition modelDefinition) : this(name, modelDefinition, Cardinality.OneToOne)
         {
             

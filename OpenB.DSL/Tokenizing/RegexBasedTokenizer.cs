@@ -9,9 +9,16 @@ namespace OpenB.DSL.Tokenizing
     {
         
         private readonly Regex _regex;
+        readonly bool recurse;
 
-        public RegexBasedTokenizer(string regularExpression)
+        public RegexBasedTokenizer(string regularExpression) : this(regularExpression, false)
         {
+
+        }
+
+        public RegexBasedTokenizer(string regularExpression, bool recurse)
+        {
+            this.recurse = recurse;
             try
             {
                 _regex = new Regex(regularExpression, RegexOptions.Multiline);
@@ -30,7 +37,7 @@ namespace OpenB.DSL.Tokenizing
         {
             if (expression == null) throw new ArgumentNullException(nameof(expression));
 
-            IList<Token> tokens = new List<Token>();
+            List<Token> tokens = new List<Token>();
 
             if (_regex.Match(expression).Success)
             {
@@ -56,7 +63,8 @@ namespace OpenB.DSL.Tokenizing
                                 var token = canChildTokenizersBeApplied
                                     ? new Token(groupName, TokenizeChildren(groupName, capture.Value), capture.Value)
                                     : new Token(groupName, capture.Value);
-                                tokens.Add(token);
+
+                                tokens.Add(token);                               
                             }
                         }
                     }
